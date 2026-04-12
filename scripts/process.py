@@ -166,17 +166,21 @@ def main():
     items = parse(text)
     inv   = sum(1 for d in items if d["marca"] == "Deye Inversores")
     ivt   = sum(1 for d in items if d["marca"] == "Deye Inverter")
+    # timezone Brasil
     tz = pytz.timezone("America/Sao_Paulo")
     now = datetime.now(tz)
+
+    # próxima meia-noite
     next_update = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
-    
+
     payload = {
-        "ok":         True,
-        "total":      len(items),
+        "ok": True,
+        "total": len(items),
         "inversores": inv,
-        "inverter":   ivt,
+        "inverter": ivt,
         "atualizado": now.strftime("%d/%m/%Y %H:%M"),
-        "items":      items,
+        "proxima_atualizacao": next_update.strftime("%d/%m/%Y %H:%M"),
+        "items": items,
     }
     OUT_FILE.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"✅  dados.json — {len(items)} modelos (Inversores: {inv} | Inverter: {ivt})", flush=True)
