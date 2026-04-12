@@ -4,9 +4,9 @@ Baixa o CSV do Inmetro e gera dados.json.
 Executado pelo GitHub Action todo dia às 00:00 BRT.
 """
 import json, re, ssl, urllib.request
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
-from zoneinfo import ZoneInfo
+import pytz
 
 CSV_URL = (
     "https://dados.inmetro.gov.br/registro/"
@@ -166,12 +166,16 @@ def main():
     items = parse(text)
     inv   = sum(1 for d in items if d["marca"] == "Deye Inversores")
     ivt   = sum(1 for d in items if d["marca"] == "Deye Inverter")
+    tz = pytz.timezone("America/Sao_Paulo")
+    now = datetime.now(tz)
+    next_update = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    
     payload = {
         "ok":         True,
         "total":      len(items),
         "inversores": inv,
         "inverter":   ivt,
-        "atualizado": datetime.now(ZoneInfo("America/Sao_Paulo")).strftime("%d/%m/%Y %H:%M"),
+        "atualizado": now.strftime("%d/%m/%Y %H:%M"),
         "items":      items,
     }
     OUT_FILE.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
