@@ -6,6 +6,7 @@ Executado pelo GitHub Action todo dia às 00:00 BRT.
 import json, re, ssl, urllib.request
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 CSV_URL = (
     "https://dados.inmetro.gov.br/registro/"
@@ -170,7 +171,7 @@ def main():
         "total":      len(items),
         "inversores": inv,
         "inverter":   ivt,
-        "atualizado": datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "atualizado": datetime.now(ZoneInfo("America/Sao_Paulo")).strftime("%d/%m/%Y %H:%M"),
         "items":      items,
     }
     OUT_FILE.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
