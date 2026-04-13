@@ -29,16 +29,16 @@ def download(url: str) -> bytes:
         "Accept": "text/csv,*/*",
     }
     req = urllib.request.Request(url, headers=headers)
-    for attempt in range(1, 4):
+    for attempt in range(1, 5):
         try:
-            print(f"  tentativa {attempt}/3…", flush=True)
-            with urllib.request.urlopen(req, context=ctx, timeout=90) as r:
+            print(f"  tentativa {attempt}/4…", flush=True)
+            with urllib.request.urlopen(req, context=ctx, timeout=360) as r:
                 data = r.read()
             print(f"  baixado: {len(data):,} bytes", flush=True)
             return data
         except Exception as e:
-            print(f"  erro: {e}", flush=True)
-            if attempt == 3:
+            print(f"  erro: {type(e)._name_}: {e}", flush=True)
+            if attempt == 4:
                 raise
     raise RuntimeError("Download falhou.")
 
