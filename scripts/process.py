@@ -134,16 +134,16 @@ def download(url):
         "User-Agent": "Mozilla/5.0 (compatible; DeyeInmetroBot/2.0)",
         "Accept": "text/csv,*/*",
     })
-    for attempt in range(1, 4):
+    for attempt in range(1, 5):
         try:
             print(f"  tentativa {attempt}/3…", flush=True)
-            with urllib.request.urlopen(req, context=ctx, timeout=90) as r:
+            with urllib.request.urlopen(req, context=ctx, timeout=240) as r:
                 data = r.read()
             print(f"  {len(data):,} bytes", flush=True)
             return data
         except Exception as e:
             print(f"  erro: {e}", flush=True)
-            if attempt == 3: raise
+            if attempt == 4: raise
 
 def decode(raw):
     if raw[:2] in (b"\xff\xfe", b"\xfe\xff"): return raw.decode("utf-16", errors="replace")
