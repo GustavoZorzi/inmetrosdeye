@@ -11,11 +11,7 @@ import urllib.request
 from datetime import datetime
 from pathlib import Path
 
-CSV_URL = (
-    "https://dados.inmetro.gov.br/registro/"
-    "SISTEMAS_E_EQUIPAMENTOS_PARA_ENERGIA_FOTOVOLTAICA_"
-    "(MODULO_CONTROLADOR_DE_CARGA_INVERSOR_E_BATERIA).csv"
-)
+CSV_URL = ("https://dados.inmetro.gov.br/registro/SISTEMAS_E_EQUIPAMENTOS_PARA_ENERGIA_FOTOVOLTAICA_(MODULO_CONTROLADOR_DE_CARGA_INVERSOR_E_BATERIA).csv")
 
 OUT_FILE = Path(__file__).parent.parent / "dados.json"
 
